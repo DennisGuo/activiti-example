@@ -1,0 +1,16 @@
+@startuml
+
+
+note top
+集成activiti步骤
+end note
+
+(*) -right-> "引入activiti依赖 \n gradle dependencies"
+
+
+
+-right-> "配置spring context "
+-down-> "spring配置activiti \n processEngineConfiguration \n<img:https://www.activiti.org/userguide/images/api.services.png>"
+
+
+@enduml

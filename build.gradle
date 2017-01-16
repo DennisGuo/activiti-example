@@ -47,7 +47,7 @@ dependencies {
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.16'
 
 //    mysql-driver
-    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.40'
 
     testCompile 'junit:junit:4.11'
     // 为了进行REST接口测试，使用servlet3作为测试容器

@@ -94,8 +94,6 @@
 用于管理查询流程中的历史数据
 
 
-
-
 ### 表单管理 FormService （选配项！！！）
 
 > The FormService is an optional service.
@@ -104,6 +102,35 @@
 > This service introduces the concept of a start form and a task form.
 
 > 此服务是用来管理（描述更合适）流程启动表单和任务中表单的
+
+在Activiti中总共有三种表单，动态表单，普通表单和外置表单。
+
+FormService的API操作可以获取到流程启动节点的表单内容以及任务节点的表单内容。
+
+**动态表单**
+```xml
+<startEvent activiti:initiator="applyUserId" id="start" name="start">
+  <extensionElements>
+    <activiti:formProperty datePattern="yyyy-MM-dd" id="startDate" name="请假开始日期" required="true" type="date"/>
+    <activiti:formProperty datePattern="yyyy-MM-dd" id="endDate" name="请假结束日期" required="true" type="date"/>
+    <activiti:formProperty id="reason" name="请假原因" required="true" type="string"/>
+  </extensionElements>
+</startEvent>
+```
+
+在`bpmn20.xml`定义文件中，有关于流程中需要填写的`activiti:formProperty`,这一类便是`动态表单`，可以在开始事件(startEvent)和任务(Task)上设置表单的动态内容，表单的内容都是以key和value的形式数据保存在引擎表中。
+
+**普通表单**
+```xml
+<startEvent id="begin" name="请假申请" activiti:initiator="applyUserId" activiti:formKey="/demo/leave/startForm"></startEvent>
+<userTask id="leaderAudit" name="部门经理审批" activiti:candidateGroups="test" activiti:formKey="/demo/leave/completeForm"></userTask>
+```
+普通表单的`startEvent `和`userTask `都是需要我们自己来定义维护的，因此布局比动态表单要优美很多。
+其中`activiti:formKey`就是来定义我们启动界面或者某个任务环节处理界面的对应的表单标识的key
+
+**外置表单**
+
+> 这种方式常用于基于工作流平台开发的方式，代码写的很少，开发人员只要把表单内容写好保存到.form文件中即可，然后配置每个节点需要的表单名称（form key），实际运行时通过引擎提供的API读取Task对应的form内容输出到页面。
 
 ### 管理服务 ManagementService （可能不需要的选配项！！！）
 

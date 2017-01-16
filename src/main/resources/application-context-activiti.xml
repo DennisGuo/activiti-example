@@ -21,20 +21,29 @@
 
         <property name="enableDatabaseEventLogging" value="true"/>
 
+        <!--在application-context.xml中配置-->
         <property name="dataSource" ref="dataSource" />
         <property name="transactionManager" ref="transactionManager" />
+
         <!--<property name="deploymentResources" value="classpath*:/act/deployments/**/*.bar"/>&lt;!&ndash; 自动部署 &ndash;&gt;-->
         <property name="databaseSchemaUpdate" value="true" /><!-- 自动建表，自动更新表结构 -->
         <property name="jobExecutorActivate" value="true" /><!-- 该参数将启用定时相关的功能 -->
         <property name="history" value="full" /><!-- 历史记录保存模式 -->
-
+        <property name="deploymentResources"  value="classpath*:/autodeploy/*.bpmn20.xml" /> <!--自动导入-->
         <!-- UUID作为主键生成策略 -->
-        <property name="idGenerator" ref="idGen" />
+        <!--<property name="idGenerator" ref="idGen" />-->
 
         <!-- 生成流程图的字体 -->
         <property name="activityFontName" value="${activiti.diagram.activityFontName}"/>
         <property name="labelFontName" value="${activiti.diagram.labelFontName}"/>
         <property name="annotationFontName" value="${activiti.diagram.annotationFontName}"/><!-- 5.21.0 新增参数 -->
+
+
+        <property name="customFormTypes">
+            <list>
+                <bean class="cn.geobeans.activiti.common.type.UsersFormType"/>
+            </list>
+        </property>
 
         <!-- 自定义用户权限 ，必须重新实现用户和组的相应方法
         <property name="customSessionFactories">
@@ -55,7 +64,8 @@
     <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
     <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
     <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
-    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService" />
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" />
 
     <!-- 设置默认的资源类型 -->
     <bean id="contentTypeResolver" class="org.activiti.rest.common.application.DefaultContentTypeResolver" />
